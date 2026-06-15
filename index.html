@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roxy Bakes – Gâteaux Personnalisés à Mannheim</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --dark: #111111;
+      --card: #161616;
+      --gold: #c9a84c;
+      --gold-light: #e2c97e;
+      --gold-dim: rgba(201,168,76,0.15);
+      --white: #f5f0e8;
+      --muted: #888;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.4rem 6vw;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center;
+      padding: 8rem 6vw 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 60%, rgba(201,168,76,0.07) 0%, transparent 70%);
+    }
+    .hero-tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 2.8rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+    .hero-cta {
+      display: inline-flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+    .btn {
+      padding: 0.85rem 2.2rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.25s;
+      cursor: pointer;
+      border: none;
+      font-family: var(--font-body);
+    }
+    .btn-gold {
+      background: var(--gold);
+      color: var(--black);
+      font-weight: 500;
+    }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-outline {
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold);
+      background: transparent;
+    }
+    .btn-outline:hover { border-color: var(--gold); background: var(--gold-dim); }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      color: var(--muted); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      opacity: 0; animation: fadeUp 0.8s 1.2s forwards;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 7rem 6vw; }
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+    .divider {
+      width: 48px; height: 1px;
+      background: var(--gold);
+      margin-bottom: 3rem;
+      opacity: 0.6;
+    }
+
+    /* ── À PROPOS ── */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .about-text p {
+      color: #aaa;
+      margin-bottom: 1.2rem;
+      font-size: 0.95rem;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .stat-box {
+      background: var(--card);
+      border: 1px solid rgba(201,168,76,0.1);
+      padding: 1.8rem 1.5rem;
+      border-radius: 4px;
+      transition: border-color 0.25s;
+    }
+    .stat-box:hover { border-color: rgba(201,168,76,0.35); }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 2.6rem;
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.06em; }
+
+    /* ── CRÉATIONS ── */
+    #creations { background: var(--dark); border-top: 1px solid rgba(255,255,255,0.06); }
+    #creations .section-header { text-align: center; margin-bottom: 4rem; }
+    #creations .section-header .divider { margin: 0 auto 0; }
+
+    .creations-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .cake-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
+      cursor: pointer;
+    }
+    .cake-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(201,168,76,0.25);
+    }
+    .cake-img {
+      width: 100%; aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+      background: linear-gradient(135deg, #1a1a1a, #222);
+      position: relative;
+      overflow: hidden;
+    }
+    .cake-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+    }
+    .cake-info { padding: 1.4rem 1.4rem 1.6rem; }
+    .cake-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
+      color: var(--white);
+    }
+    .cake-desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.8rem; }
+    .cake-price {
+      font-size: 0.82rem;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      font-weight: 500;
+    }
+
+    /* ── PROCESS ── */
+    #process { border-top: 1px solid rgba(255,255,255,0.06); }
+    #process .content { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+    .process-steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex; gap: 1.8rem; padding: 2rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      position: relative;
+    }
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      color: rgba(201,168,76,0.25);
+      min-width: 2.5rem;
+      line-height: 1;
+      padding-top: 0.1rem;
+    }
+    .step-body h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-bottom: 0.4rem;
+    }
+    .step-body p { font-size: 0.85rem; color: var(--muted); }
+
+    .process-aside {
+      background: var(--card);
+      border: 1px solid rgba(201,168,76,0.12);
+      border-radius: 4px;
+      padding: 2.5rem;
+      position: sticky;
+      top: 6rem;
+    }
+    .process-aside h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+      color: var(--gold-light);
+    }
+    .process-aside p { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .delivery-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--gold-dim);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 2px;
+      padding: 0.5rem 1rem;
+      font-size: 0.76rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+    }
+    .zone-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .zone-list li { font-size: 0.82rem; color: #888; display: flex; align-items: center; gap: 0.5rem; }
+    .zone-list li::before { content: '—'; color: var(--gold); opacity: 0.5; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--dark); border-top: 1px solid rgba(255,255,255,0.06); text-align: center; }
+    #contact .section-header { margin-bottom: 3rem; }
+    #contact .section-header .divider { margin: 0 auto; }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 760px;
+      margin: 0 auto 3rem;
+    }
+    .contact-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 4px;
+      padding: 2rem 1.5rem;
+      text-decoration: none;
+      transition: border-color 0.25s, transform 0.25s;
+      display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+    }
+    .contact-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-4px); }
+    .contact-icon { font-size: 1.6rem; }
+    .contact-label { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+    .contact-val { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 6vw;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.75rem; color: var(--muted);
+    }
+    footer span { color: rgba(201,168,76,0.6); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 5vw; }
+      .nav-links { display: none; }
+      #about { grid-template-columns: 1fr; gap: 3rem; }
+      .creations-grid { grid-template-columns: 1fr; }
+      #process .content { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-grid { grid-template-columns: 1fr; max-width: 320px; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">Roxy Bakes</a>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#creations">Créations</a></li>
+    <li><a href="#process">Commande</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <p class="hero-tag">Mannheim · Gâteaux sur commande</p>
+  <h1 class="hero-title">
+    L'art du gâteau,<br/><em>fait pour vous.</em>
+  </h1>
+  <p class="hero-sub">Gâteaux personnalisés et bento cakes artisanaux, créés avec soin et livrés à Mannheim et alentours.</p>
+  <div class="hero-cta">
+    <a href="#creations" class="btn btn-gold">Voir les créations</a>
+    <a href="#contact" class="btn btn-outline">Commander</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Défiler</span>
+  </div>
+</section>
+
+<!-- À PROPOS -->
+<section id="about">
+  <div class="about-text reveal">
+    <p class="section-label">L'histoire</p>
+    <h2 class="section-title">Une passion<br/>devenue <em>métier</em></h2>
+    <div class="divider"></div>
+    <p>Roxy Bakes est une pâtisserie artisanale basée à Mannheim, spécialisée dans la création de gâteaux entièrement personnalisés. Chaque commande est unique, pensée et réalisée à la main.</p>
+    <p>Du gâteau d'anniversaire élaboré au bento cake intime, nous mettons la même exigence dans chaque création — des saveurs aux décorations, jusqu'à la livraison.</p>
+    <p style="margin-top:1.8rem;">
+      <a href="#contact" class="btn btn-outline">Discuter de votre projet →</a>
+    </p>
+  </div>
+  <div class="about-stats reveal">
+    <div class="stat-box">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Fait maison</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">48h</div>
+      <div class="stat-label">Délai minimum</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Personnalisations</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">🚚</div>
+      <div class="stat-label">Livraison Mannheim</div>
+    </div>
+  </div>
+</section>
+
+<!-- CRÉATIONS -->
+<section id="creations">
+  <div class="section-header reveal">
+    <p class="section-label">Portfolio</p>
+    <h2 class="section-title">Nos <em>créations</em></h2>
+    <div class="divider"></div>
+  </div>
+  <div class="creations-grid">
+    <div class="cake-card reveal">
+      <div class="cake-img">🎂</div>
+      <div class="cake-info">
+        <div class="cake-name">Gâteau Anniversaire</div>
+        <div class="cake-desc">Design entièrement personnalisé selon vos envies — thème, couleurs, message.</div>
+        <div class="cake-price">À partir de 45 €</div>
+      </div>
+    </div>
+    <div class="cake-card reveal">
+      <div class="cake-img">🍱</div>
+      <div class="cake-info">
+        <div class="cake-name">Bento Cake</div>
+        <div class="cake-desc">Mini gâteau individuel décoré, parfait pour un cadeau original et personnalisé.</div>
+        <div class="cake-price">À partir de 18 €</div>
+      </div>
+    </div>
+    <div class="cake-card reveal">
+      <div class="cake-img">💍</div>
+      <div class="cake-info">
+        <div class="cake-name">Gâteau Événement</div>
+        <div class="cake-desc">Mariage, baby shower, graduation — créations sur mesure pour les grands moments.</div>
+        <div class="cake-price">Sur devis</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSUS -->
+<section id="process">
+  <div class="content">
+    <div class="reveal">
+      <p class="section-label">Comment ça marche</p>
+      <h2 class="section-title">De l'idée<br/>au <em>gâteau</em></h2>
+      <div class="divider"></div>
+      <div class="process-steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <h3>Prenez contact</h3>
+            <p>Envoyez-nous un message via Instagram, TikTok ou WhatsApp avec votre idée et la date souhaitée.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <h3>On construit ensemble</h3>
+            <p>On discute du design, des saveurs et du budget pour définir votre gâteau idéal.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <h3>Confection artisanale</h3>
+            <p>Votre gâteau est préparé à la main avec soin dans les 48h avant votre événement.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <h3>Livraison ou retrait</h3>
+            <p>On livre à Mannheim et alentours, ou vous passez récupérer votre commande.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="process-aside reveal">
+      <h3>Zone de livraison</h3>
+      <p>Nous livrons actuellement dans le secteur de Mannheim et ses communes voisines.</p>
+      <div class="delivery-badge">📍 Livraison disponible</div>
+      <ul class="zone-list">
+        <li>Mannheim (toute la ville)</li>
+        <li>Ludwigshafen am Rhein</li>
+        <li>Heidelberg</li>
+        <li>Viernheim</li>
+        <li>Schwetzingen</li>
+        <li>Autres zones · Sur demande</li>
+      </ul>
+      <br/>
+      <a href="#contact" class="btn btn-gold" style="width:100%;display:block;text-align:center;">Commander maintenant</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header reveal">
+    <p class="section-label">Nous trouver</p>
+    <h2 class="section-title">Prêt(e) à commander ?</h2>
+    <div class="divider"></div>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:2rem;">Contactez-nous via vos réseaux préférés — on répond rapidement !</p>
+  </div>
+  <div class="contact-grid">
+    <a class="contact-card" href="https://instagram.com/roxy_bakes" target="_blank">
+      <div class="contact-icon">📸</div>
+      <div class="contact-label">Instagram</div>
+      <div class="contact-val">@roxy bakes</div>
+    </a>
+    <a class="contact-card" href="https://tiktok.com/@roxy_bakes" target="_blank">
+      <div class="contact-icon">🎵</div>
+      <div class="contact-label">TikTok</div>
+      <div class="contact-val">@roxy bakes</div>
+    </a>
+    <a class="contact-card" href="mailto:kwayeprayanne@gmail.com">
+      <div class="contact-icon">✉️</div>
+      <div class="contact-label">Email</div>
+      <div class="contact-val">kwayeprayanne@gmail.com</div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2026 <span>Roxy Bakes</span> · Mannheim</div>
+  <div>Gâteaux artisanaux sur commande</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Smooth active nav
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : '';
+    });
+  });
+</script>
+</body>
+</html>
